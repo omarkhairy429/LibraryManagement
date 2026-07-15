@@ -1,8 +1,13 @@
 package com.orange.omar.LibraryManagement.models;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class Book {
     private String id;
+    @NotBlank(message = "Title can't be blank")
     private String title;
+    @NotBlank(message = "Author can't be blank")
     private String author;
     private String category;
 
