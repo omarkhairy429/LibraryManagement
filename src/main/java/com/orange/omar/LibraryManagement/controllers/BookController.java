@@ -34,4 +34,9 @@ public class BookController {
     public Book delete(@PathVariable String id) {
         return bookService.deleteBook(id);
     }
+
+    @PutMapping("/books/{id}")
+    public Book update(@PathVariable String id, @RequestBody @Valid Book book) {
+        return bookService.updateBook(id ,book);
+    }
 }

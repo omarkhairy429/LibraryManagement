@@ -52,4 +52,16 @@ public class BookService {
         log.debug("Book is not null, Deleting the Book");
         return book;
     }
+
+    public Book updateBook(String id, Book updatedBook) {
+        Book book  = books.get(id);
+        if (book == null) {
+            log.warn("User Input is invalid (Book ID doesn't exist) Can't update");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
+        }
+        log.debug("Book is not null, Updating the book");
+        updatedBook.setId(id);
+        books.put(id, updatedBook);
+        return updatedBook;
+    }
 }
