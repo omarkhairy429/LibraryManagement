@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: LibraryManagement
+
+server:
+  port: 5000
+  
+logging:
+  level:
+    com.orange.omar.LibraryManagement: WARN

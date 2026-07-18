@@ -4,3 +4,12 @@ spring:
 
 server:
   port: 5000
+
+library:
+  initial-books:
+    -
+      title: "Awlad Haritna"
+      author: "Nagib Mahfouz"
+    -
+      title: "Clean Code"
+      author: "Robert Martin"

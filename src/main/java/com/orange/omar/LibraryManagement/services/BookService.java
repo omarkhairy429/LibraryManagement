@@ -16,6 +16,10 @@ import java.util.UUID;
 public class BookService {
     private Map<String ,Book> books = new HashMap<>();
 
+    public  BookService(Map<String, Book> books) {
+        this.books = books;
+    }
+
     public Collection<Book> getBooks() {
         log.info("Getting All Books");
         return books.values();
@@ -24,6 +28,7 @@ public class BookService {
     public Book getBook(String id) {
         Book book = books.get(id);
         if  (book == null) {
+            log.warn("User Input is invalid (Book ID doesn't exist) Can't get");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book nout found");
         }
         log.debug("Book is not null, Getting the Book");
@@ -41,6 +46,7 @@ public class BookService {
     public Book deleteBook(String id) {
         Book book = books.remove(id);
         if  (book == null) {
+            log.warn("User Input is invalid (Book ID doesn't exist) Can't delete");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book nout found");
         }
         log.debug("Book is not null, Deleting the Book");
