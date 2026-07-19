@@ -1,0 +1,123 @@
+Feature: Showing All books
+
+As a User, I want to see all books
+So that,   I can decide which book to borrow
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/books
+WHEN  I make a Get Request
+THEN  I should see all the books
+
+Feature: Showing Specific book
+
+As a User, I want to specific book
+So that,   I can know its details
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/books/id
+WHEN  I make a Get Request
+THEN  I should see the requested book
+
+
+Feature: ِAdding new Book
+
+As a Library admin, I want to add new book
+So that,   users can see it
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/books
+WHEN  I make a Post Request
+THEN  I should the book
+AND   the book should be stored in the Book list
+
+Feature: Deleting a Book
+
+As a Library admin, I want to delete a book
+So that,  I can remove any book uploaded by mistake
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/books/id
+WHEN  I make a delete Request
+THEN  the book should be removed from database (List)
+
+Feature: Updating a Book
+
+As a Library admin, I want to update a book
+So that,  I can edit any mistakes in book details
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/books/id
+WHEN  I make a Put Request
+THEN  The updated book should be shown for me
+AND   Stored in the database
+
+
+Feature: Borrow a book
+
+As a User , I want to borrow a book
+So that,    I can read it
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/borrowRecord/bookID
+WHEN  I make a Post Request
+AND   I enter a valid book id
+AND   I have < 5 borrowed books
+AND   I don't have >= 3 overdue books
+THEN  Create new Book Record
+AND   Mark the book as borrowed
+
+@Invalid
+Scenario 2)
+GIVEN I access http://localhost:5000/borrowRecord/bookID
+WHEN  I make a Post Request
+AND   I enter a (non valid) book id
+AND   I have < 5 borrowed books
+AND   I don't have >= 3 overdue books
+THEN  Refuse the request
+AND   Show the user (The book is not available) message
+
+@Invalid
+Scenario 3)
+GIVEN I access http://localhost:5000/borrowRecord/bookID
+WHEN  I make a Post Request
+AND   I enter a valid book id
+AND   I have >= 5 borrowed books
+AND   I don't have >= 3 overdue books
+THEN  Refuse the request
+AND   Show the user (You can't borrow more that 5 books at a time) message
+
+@Invalid
+Scenario 4)
+GIVEN I access http://localhost:5000/borrowRecord/bookID
+WHEN  I make a Post Request
+AND   I enter a valid book id
+AND   I have < 5 borrowed books
+AND   I have >= 3 overdue books
+THEN  Refuse the request
+AND   Show the user (You are blocked) message
+
+
+Feature: Return a book
+
+As a User , I want Return a book
+So that,    I can read other books later
+
+@Valid
+Scenario 1)
+GIVEN I access http://localhost:5000/borrowRecord/borrowID
+WHEN  I make a put Request
+AND   I enter a valid borrow id
+THEN  Set the return Date to current Date
+AND   Update book availability to available
+AND   Update the Record status to returned
+
+
+
+
+
