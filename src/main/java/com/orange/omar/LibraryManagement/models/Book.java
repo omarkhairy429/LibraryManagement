@@ -10,6 +10,7 @@ public class Book {
     @NotBlank(message = "Author can't be blank")
     private String author;
     private String category;
+    private boolean available = true;
 
     /***************************** Constructors *****************************/
     public Book() {
@@ -39,6 +40,10 @@ public class Book {
         return category;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
+
     /***************************** Setters *****************************/
     public void setId(String id) {
         this.id = id;
@@ -54,5 +59,9 @@ public class Book {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
