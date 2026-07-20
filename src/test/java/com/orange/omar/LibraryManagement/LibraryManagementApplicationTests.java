@@ -2,6 +2,7 @@ package com.orange.omar.LibraryManagement;
 
 import com.orange.omar.LibraryManagement.models.Book;
 import com.orange.omar.LibraryManagement.services.BookService;
+import com.orange.omar.LibraryManagement.services.BorrowRecordService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class LibraryManagementApplicationTests {
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private BorrowRecordService borrowRecordService;
 
 	@Test
 	void contextLoads() {
@@ -36,6 +39,9 @@ class LibraryManagementApplicationTests {
 //		Book checkBook = bookService.getBook(book.getId());
 //		assertEquals("Nagib Mahfouz" , checkBook.getAuthor());
 //	}
+
+
+
 
 
 }
