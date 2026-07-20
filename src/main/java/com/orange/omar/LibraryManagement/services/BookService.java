@@ -29,7 +29,7 @@ public class BookService {
         Book book = books.get(id);
         if  (book == null) {
             log.warn("User Input is invalid (Book ID doesn't exist) Can't get");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book nout found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found");
         }
         log.debug("Book is not null, Getting the Book");
         return book;
@@ -64,4 +64,6 @@ public class BookService {
         books.put(id, updatedBook);
         return updatedBook;
     }
+
+
 }

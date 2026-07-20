@@ -53,6 +53,37 @@ public class BorrowRecordService {
         return record;
     }
 
+    public BorrowRecord returnBook(String borrowID) {
+
+        BorrowRecord record = records.get(borrowID);
+        if (record == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow record not found");
+        }
+
+
+        if ("Returned".equalsIgnoreCase(record.getStatus())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book has already been returned");
+        }
+
+        record.setReturnDate(new Date());
+        record.setStatus("Returned");
+
+
+        Book book = bookService.getBook(record.getBookID());
+        if (book != null) {
+            book.setAvailable(true);
+            bookService.updateBook(book.getId(), book);
+        }
+
+
+        int currentCount = numberOfBorrowedBooks.getOrDefault(record.getUserID(), 0);
+        if (currentCount > 0) {
+            numberOfBorrowedBooks.put(record.getUserID(), currentCount - 1);
+        }
+
+        return record;
+    }
+
     private boolean isAvailable(String bookID) {
         Book book = bookService.getBook(bookID);
         if (!book.isAvailable()) {
@@ -75,7 +106,7 @@ public class BorrowRecordService {
         for (BorrowRecord record : records.values()) {
             boolean isSameUser = userID.equals(record.getUserID());
             boolean isNotReturned = !"Returned".equalsIgnoreCase(record.getStatus());
-            boolean isOverdue = currentDate.after(record.getDueDate());
+            boolean isOverdue = record.getDueDate() != null && currentDate.after(record.getDueDate());
 
             if (isSameUser && isNotReturned && isOverdue) {
                 overdueCount++;
