@@ -84,7 +84,7 @@ class LibraryManagementApplicationTests {
 			exceptionExist = true;
 		}
 
-		assertFalse(exceptionExist, "User can borrow 5 books normally");
+		assertFalse(exceptionExist);
 	}
 
 
@@ -126,13 +126,13 @@ class LibraryManagementApplicationTests {
 			exceptionExist = true;
 		}
 
-		assertTrue(exceptionExist, "Exception Thrown (You can't borrow 5 books or more at a time)");
+		assertTrue(exceptionExist);
 	}
 
 
 	@Test
 	void userWithThreeOverdueBooksIsBlockedTest() {
-		String userID = "USER-777";
+		String userID = "USER-123457";
 
 		for (int i = 0; i < 3; i++) {
 			Book book = new Book();
@@ -165,15 +165,15 @@ class LibraryManagementApplicationTests {
 		newRecord.setUserID(userID);
 		newRecord.setBookID(newBook.getId());
 
-		boolean exceptionThrown = false;
+		boolean exceptionExists = false;
 
 		try {
 			borrowRecordService.borrowBook(newRecord);
 		} catch (Exception e) {
-			exceptionThrown = true;
+			exceptionExists = true;
 		}
 
-		assertTrue(exceptionThrown, "User with 3 overdue books should be blocked");
+		assertTrue(exceptionExists);
 	}
 
 	@Test

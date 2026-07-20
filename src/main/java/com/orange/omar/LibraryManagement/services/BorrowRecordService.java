@@ -26,20 +26,19 @@ public class BorrowRecordService {
         record.setBorrowID(unique_id);
         Book book = bookService.getBook(record.getBookID());
         numberOfBorrowedBooks.put(record.getUserID(), numberOfBorrowedBooks.getOrDefault(record.getUserID(), 0));
-        System.out.println("Number of borrowed books = " + numberOfBorrowedBooks.get(record.getUserID()));
         /* Check if the book is not currently borrowed */
        if (!isAvailable(record.getBookID())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
        }
 
        /* Check if the user has fewer than 5 active borrowed books */
        if (!isLessThanFiveBooks(record.getUserID())) {
-           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User has 5 books borrowed");
+           throw new ResponseStatusException(HttpStatus.FORBIDDEN);
        }
 
        /* Check if the user has 3 or more overdue books */
        if (hasOverdueBooks(record.getUserID())) {
-           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User has 3 or more overdue books");
+           throw new ResponseStatusException(HttpStatus.FORBIDDEN);
        }
 
 
@@ -57,12 +56,7 @@ public class BorrowRecordService {
 
         BorrowRecord record = records.get(borrowID);
         if (record == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Borrow record not found");
-        }
-
-
-        if ("Returned".equalsIgnoreCase(record.getStatus())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book has already been returned");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
         record.setReturnDate(new Date());
@@ -70,16 +64,14 @@ public class BorrowRecordService {
 
 
         Book book = bookService.getBook(record.getBookID());
-        if (book != null) {
-            book.setAvailable(true);
-            bookService.updateBook(book.getId(), book);
-        }
+        book.setAvailable(true);
+        bookService.updateBook(book.getId(), book);
+
 
 
         int currentCount = numberOfBorrowedBooks.getOrDefault(record.getUserID(), 0);
-        if (currentCount > 0) {
-            numberOfBorrowedBooks.put(record.getUserID(), currentCount - 1);
-        }
+        numberOfBorrowedBooks.put(record.getUserID(), currentCount - 1);
+
 
         return record;
     }
