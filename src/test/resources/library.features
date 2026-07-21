@@ -110,9 +110,9 @@ So that,    I can read other books later
 
 @Valid
 Scenario 1)
-GIVEN I access http://localhost:5000/borrowRecord/borrowID
-WHEN  I make a put Request
-AND   I enter a valid borrow id
+GIVEN There is a book stored in database
+WHEN  I borrow the book
+AND   I try to return it
 THEN  Set the return Date to current Date
 AND   Update book availability to available
 AND   Update the Record status to returned
